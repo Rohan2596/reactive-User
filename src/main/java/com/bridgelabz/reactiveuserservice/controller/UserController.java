@@ -15,5 +15,9 @@ public class UserController {
         return Mono.just("User Added.");
     }
 
+    @PostMapping("/auth")
+    public Mono<String> userAuthenticated(){
+        return Mono.just("User Authenticated.");
+    }
 
 }
