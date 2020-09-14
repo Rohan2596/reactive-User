@@ -1,5 +1,6 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @ExtendWith(SpringExtension.class)
@@ -96,11 +100,33 @@ public class UserControllerTest {
 
     @Test
     public void givenValidResetDetails_whenUpdated_shouldReturnCorrectResponse(){
-        webTestClient.get().uri("/reactive/user/reset")
+        webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Password Updated.");
     }
+
+    /*
+     * @author ROHAN KADAM
+     * Purpose:Get All User Test Cases For Negative and Positive use cases
+     * @date 14 September 2020
+     * */
+
+    @Test
+    public void givenValidInput_whenVerified_shouldReturnListOfAllUser(){
+        List<String> list= new ArrayList<>();
+        list.add("John Doe");
+        list.add("John Hopkins");
+      webTestClient.get().uri("/reactive/user/all")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+               .isEqualTo(list.get(0));
+
+    }
+
+
 }
