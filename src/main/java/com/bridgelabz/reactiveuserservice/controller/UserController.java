@@ -1,13 +1,14 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
+import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import jdk.nashorn.internal.objects.annotations.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,8 @@ import java.util.List;
 public class UserController {
 
     @PostMapping
-    public Mono<String> userAdded(){
-        return Mono.just("User Added.");
+    public Mono<String> userAdded( @Valid @RequestBody AddUserDto addUserDto){
+       return Mono.just("User Added.");
     }
 
     @PostMapping("/auth")

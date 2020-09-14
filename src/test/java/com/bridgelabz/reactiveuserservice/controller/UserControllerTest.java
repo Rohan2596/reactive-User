@@ -1,6 +1,8 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
+import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,16 @@ public class UserControllerTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    private AddUserDto addUserDto;
+
+    @BeforeEach
+    void setUp(){
+       this.addUserDto=new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+    }
+
     /*
     *@author ROHAN KADAM
     * Purpose:User ADDITION/Register Test Cases For Negative and Positive use cases
@@ -31,9 +45,46 @@ public class UserControllerTest {
     public void givenValidUserDetails_whenAdded_shouldReturnCorrectResponse(){
 
         webTestClient.post().uri("/reactive/user")
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
                 .exchange()
                 .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Added.");
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_Name_null_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto(null,
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .isEqualTo("User name can't be null.");
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_Name_Empty_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().is4xxClientError()
                 .expectBody(String.class)
                 .isEqualTo("User Added.");
 
