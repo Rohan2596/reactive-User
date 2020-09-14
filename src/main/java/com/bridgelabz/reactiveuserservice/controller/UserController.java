@@ -32,4 +32,9 @@ public class UserController {
         return Mono.just("User Password Forgotten.");
     }
 
+    @PostMapping("/reset")
+    public Mono<String> resetPassword(){
+        return Mono.just("User Password Updated.");
+    }
+
 }

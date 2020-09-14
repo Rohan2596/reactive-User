@@ -88,4 +88,19 @@ public class UserControllerTest {
     }
 
 
+    /*
+     * @author ROHAN KADAM
+     * Purpose:User  Password Changed/Updated Test Cases For Negative and Positive use cases
+     * @date 14 September 2020
+     * */
+
+    @Test
+    public void givenValidResetDetails_whenUpdated_shouldReturnCorrectResponse(){
+        webTestClient.get().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Password Updated.");
+    }
 }
