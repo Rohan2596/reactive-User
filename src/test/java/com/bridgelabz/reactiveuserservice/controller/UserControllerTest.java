@@ -19,7 +19,7 @@ public class UserControllerTest {
 
     /*
     *@author ROHAN KADAM
-    * Purpose:User ADDITION Test Cases For Negative and Positive use cases
+    * Purpose:User ADDITION/Register Test Cases For Negative and Positive use cases
     * @date 14 September 2020
     * */
 
@@ -38,7 +38,7 @@ public class UserControllerTest {
 
     /*
      *@author ROHAN KADAM
-     * Purpose:User ADDITION Test Cases For Negative and Positive use cases
+     * Purpose:User Authentication/Login Test Cases For Negative and Positive use cases
      * @date 14 September 2020
      * */
 
@@ -53,4 +53,39 @@ public class UserControllerTest {
                 .isEqualTo("User Authenticated.");
 
     }
+
+    /*
+     * @author ROHAN KADAM
+     * Purpose:User Verification Test Cases For Negative and Positive use cases
+     * @date 14 September 2020
+     * */
+
+    @Test
+    public void givenValidUserToken_whenVerified_shouldReturnCorrectResponse(){
+        webTestClient.get().uri("/reactive/user/verify")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Verified.");
+    }
+
+
+    /*
+     * @author ROHAN KADAM
+     * Purpose:User Forgot Password Test Cases For Negative and Positive use cases
+     * @date 14 September 2020
+     * */
+
+    @Test
+    public void givenValidUserToken_whenForgot_shouldReturnCorrectResponse(){
+        webTestClient.get().uri("/reactive/user/forgot")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Password Forgotten.");
+    }
+
+
 }

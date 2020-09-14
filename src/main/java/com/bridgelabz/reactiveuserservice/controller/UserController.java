@@ -1,5 +1,7 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,16 @@ public class UserController {
     @PostMapping("/auth")
     public Mono<String> userAuthenticated(){
         return Mono.just("User Authenticated.");
+    }
+
+    @GetMapping("/verify")
+    public Mono<String> userVerification(){
+        return Mono.just("User Verified.");
+    }
+
+    @GetMapping("/forgot")
+    public Mono<String> forgotPassword(){
+        return Mono.just("User Password Forgotten.");
     }
 
 }
