@@ -104,7 +104,39 @@ public class UserControllerTest {
                 .expectBody();
 
     }
+    @Test
+    public void givenInValidUserDetails_Name_sizeMin_whenAdded_shouldReturnCorrectResponse(){
 
+
+        this.addUserDto=new AddUserDto("ad",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_Name_sizeMax_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("ad xdfdsfsdfsdsfsdsfddsfds sdfsdfsdfds dfsfs sdfsdfsdf esfsdfdsfdsfds sdfdsf",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
 
 
     /*
