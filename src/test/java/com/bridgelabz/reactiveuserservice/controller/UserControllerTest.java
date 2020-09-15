@@ -704,15 +704,31 @@ public class UserControllerTest {
      * */
 
     @Test
-    public void givenValidUserToken_whenForgot_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/forgot")
+    public void givenValidUserEmailAddress_whenForgot_shouldReturnCorrectResponse() {
+        webTestClient.get().uri("/reactive/user/forgot/?emailId="+ "rohan.kadam@bridgelabz.com")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Password Forgotten.");
     }
+    @Test
+    public void givenInValidUserEmail_whenForgot_shouldReturnCorrectResponse() {
+        webTestClient.get().uri("/reactive/user/forgot/?emailId="+ "")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Email Address Doesn't Exists.");
+    }
 
+      @Test
+    public void givenValidUserEmail_inValidUrl_whenForgot_shouldReturnCorrectResponse() {
+        webTestClient.get().uri("/reactive/user/forgot/?emailI="+ "")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
 
     /*
      * @author ROHAN KADAM

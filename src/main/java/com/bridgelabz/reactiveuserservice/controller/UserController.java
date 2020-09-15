@@ -36,7 +36,11 @@ public class UserController {
     }
 
     @GetMapping("/forgot")
-    public Mono<String> forgotPassword(){
+    public Mono<String> forgotPassword(@RequestParam String emailId){
+        if(emailId.isEmpty()){
+            return Mono.just("Email Address Doesn't Exists.");
+        }
+
         return Mono.just("User Password Forgotten.");
     }
 
