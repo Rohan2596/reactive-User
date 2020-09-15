@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -23,6 +20,8 @@ public class AddUserDto  {
 
     @NotNull(message = "Email Address can't be null.")
     @NotEmpty(message = "Email Address can't be empty.")
+    @Email(message = "Email Address pattern doesn't match.")
+    @Pattern(regexp = "[a-zA-Z0-9.]{1,}+[@]{1}+[a-zA-Z0-9.]{1,}$",message = "Email id Pattern Does'nt match.")
     public String emailId;
 
     @NotNull(message = "Password can't be null.")

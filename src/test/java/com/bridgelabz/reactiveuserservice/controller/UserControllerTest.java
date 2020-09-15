@@ -138,6 +138,89 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void givenInValidUserDetails_email_null_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("Rohan Kadam",
+                null,
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_email_Empty_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("ROhan Kadam",
+                " ",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_email_pattern1_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("Rohan kadam",
+                "rohan.bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+    @Test
+    public void givenInValidUserDetails_email_pattern2_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("ROhan kadam",
+                "rohan.kadam@@@#.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidUserDetails_email_pattern3_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("ROhan Kadam",
+                "rohan.kadam@bridgelabz@.@com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
 
     /*
      *@author ROHAN KADAM
