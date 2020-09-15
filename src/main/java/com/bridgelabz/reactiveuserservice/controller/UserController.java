@@ -27,8 +27,11 @@ public class UserController {
         return Mono.just("User Authenticated.");
     }
 
-    @GetMapping("/verify")
-    public Mono<String> userVerification(){
+    @GetMapping("/verify/{token}")
+    public Mono<String> userVerification(@PathVariable(name = "token") String token){
+        if( token.isEmpty()){
+            return Mono.just("In-valid User Token.");
+        }
         return Mono.just("User Verified.");
     }
 

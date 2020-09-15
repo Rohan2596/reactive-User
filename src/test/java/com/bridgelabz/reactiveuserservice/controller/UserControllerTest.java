@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -679,12 +680,20 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserToken_whenVerified_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/verify")
+        webTestClient.get().uri("/reactive/user/verify/{token}","token")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Verified.");
+    }
+    @Test
+    public void givenInValidUserToken_empty_whenVerified_shouldReturnCorrectResponse() {
+        webTestClient.get().uri("/reactive/user/verify/{token}","")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is4xxClientError();
+
     }
 
 
