@@ -29,10 +29,7 @@ public class UserControllerTest {
 
     @BeforeEach
     void setUp(){
-       this.addUserDto=new AddUserDto("Rohan Kadam",
-                "rohan.kadam@bridgelabz.com",
-                "BridgeLabz@2020",
-                "7890123456");
+
     }
 
     /*
@@ -43,7 +40,10 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserDetails_whenAdded_shouldReturnCorrectResponse(){
-
+        this.addUserDto=new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
         webTestClient.post().uri("/reactive/user")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(this.addUserDto))
@@ -67,8 +67,7 @@ public class UserControllerTest {
                 .body(BodyInserters.fromObject(this.addUserDto))
                 .exchange()
                 .expectStatus().isBadRequest()
-                .expectBody(String.class)
-                .isEqualTo("User name can't be null.");
+                .expectBody();
 
     }
 
@@ -84,11 +83,28 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(this.addUserDto))
                 .exchange()
-                .expectStatus().is4xxClientError()
-                .expectBody(String.class)
-                .isEqualTo("User Added.");
+                .expectStatus().isBadRequest()
+                .expectBody();
 
     }
+
+    @Test
+    public void givenInValidUserDetails_Name_pattern_whenAdded_shouldReturnCorrectResponse(){
+
+
+        this.addUserDto=new AddUserDto("11234",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
 
 
     /*
