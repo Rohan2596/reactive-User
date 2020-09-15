@@ -2,6 +2,7 @@ package com.bridgelabz.reactiveuserservice.controller;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
+import com.bridgelabz.reactiveuserservice.dto.ResetPassword;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/reset")
-    public Mono<String> resetPassword(){
+    public Mono<String> resetPassword(@RequestBody @Valid ResetPassword resetPassword){
         return Mono.just("User Password Updated.");
     }
 

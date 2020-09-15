@@ -2,8 +2,8 @@ package com.bridgelabz.reactiveuserservice.controller;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+
+import com.bridgelabz.reactiveuserservice.dto.ResetPassword;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
-import reactor.core.publisher.Mono;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ public class UserControllerTest {
 
     private AddUserDto addUserDto;
     private LoginDTO loginDTO;
+    private ResetPassword resetPassword;
 
 
     /*
@@ -489,7 +489,7 @@ public class UserControllerTest {
     @Test
     public void givenValidLoginDetails_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","Bridgelabz@2020");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -504,7 +504,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_emailID_null_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO(null,"Bridgelabz@2020");
+        this.loginDTO = new LoginDTO(null, "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -519,7 +519,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_emailID_empty_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("","Bridgelabz@2020");
+        this.loginDTO = new LoginDTO("", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -533,7 +533,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_emailID_pattern_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan25.kadam@bri@dgelabz.com","Bridgelabz@2020");
+        this.loginDTO = new LoginDTO("rohan25.kadam@bri@dgelabz.com", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -547,7 +547,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_emailID_pattern1_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@","Bridgelabz@2020");
+        this.loginDTO = new LoginDTO("rohan.kadam@", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -561,7 +561,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_emailID_pattern2_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bri123/*","Bridgelabz@2020");
+        this.loginDTO = new LoginDTO("rohan.kadam@bri123/*", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -573,11 +573,10 @@ public class UserControllerTest {
     }
 
 
-
     @Test
     public void givenInValidLoginDetails_password_null_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com",null);
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", null);
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -592,7 +591,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_password_empty_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -606,7 +605,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_password_pattern_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan25.kadam@bri@dgelabz.com","Brisgee@4/*");
+        this.loginDTO = new LoginDTO("rohan25.kadam@bri@dgelabz.com", "Brisgee@4/*");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -620,7 +619,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_password_pattern1_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","!<>rerwwvsd");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "!<>rerwwvsd");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -634,7 +633,7 @@ public class UserControllerTest {
     @Test
     public void givenInValidLoginDetails_password_pattern2_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","bridfe@?''");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "bridfe@?''");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -644,10 +643,11 @@ public class UserControllerTest {
                 .expectBody();
 
     }
+
     @Test
     public void givenInValidLoginDetails_password_sizeMin_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","B@20202");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "B@20202");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -657,10 +657,11 @@ public class UserControllerTest {
                 .expectBody();
 
     }
+
     @Test
     public void givenInValidLoginDetails_password_sizeMax_whenAuthenticated_shouldReturnCorrectResponse() {
 
-        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","Bridge@2020weallare the best version dsfsdfdsf sdfdsfsd ");
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "Bridge@2020weallare the best version dsfsdfdsf sdfdsfsd ");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -680,16 +681,17 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserToken_whenVerified_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/verify/{token}","token")
+        webTestClient.get().uri("/reactive/user/verify/{token}", "token")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Verified.");
     }
+
     @Test
     public void givenInValidUserToken_empty_whenVerified_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/verify/{token}","")
+        webTestClient.get().uri("/reactive/user/verify/{token}", "")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().is4xxClientError();
@@ -705,16 +707,17 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserEmailAddress_whenForgot_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/forgot/?emailId="+ "rohan.kadam@bridgelabz.com")
+        webTestClient.get().uri("/reactive/user/forgot/?emailId=" + "rohan.kadam@bridgelabz.com")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Password Forgotten.");
     }
+
     @Test
     public void givenInValidUserEmail_whenForgot_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/forgot/?emailId="+ "")
+        webTestClient.get().uri("/reactive/user/forgot/?emailId=" + "")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -722,9 +725,9 @@ public class UserControllerTest {
                 .isEqualTo("Email Address Doesn't Exists.");
     }
 
-      @Test
+    @Test
     public void givenValidUserEmail_inValidUrl_whenForgot_shouldReturnCorrectResponse() {
-        webTestClient.get().uri("/reactive/user/forgot/?emailI="+ "")
+        webTestClient.get().uri("/reactive/user/forgot/?emailI=" + "")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isBadRequest();
@@ -738,12 +741,131 @@ public class UserControllerTest {
 
     @Test
     public void givenValidResetDetails_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridgelabz@2020", "Bridgelabz@2020");
+
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Password Updated.");
+    }
+
+    @Test
+    public void givenInValidResetDetails_null_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword(null, "Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_empty_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword(" ", "Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_pattern_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("B23<>[]sdfsf", "Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_pattern1_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridg/*-[]-", "Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_pattern2_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridgelabz@  2020", "Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+
+    /*
+    * Retype Password...
+    *
+    * */
+
+    @Test
+    public void givenInValidResetDetails_retype_null_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridgelabz@2020",null);
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_retype_empty_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridgelabz@2020"," ");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_retype_pattern_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword( "Bridgelabz@2020","B23<>[]sdfsf");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_retype_pattern1_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword("Bridgelabz@2020","Bridg/*-[]-");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    public void givenInValidResetDetails_retype_pattern2_whenUpdated_shouldReturnCorrectResponse() {
+        this.resetPassword = new ResetPassword( "Bridgelabz@2020","Bridgelabz@  2020");
+
+        webTestClient.post().uri("/reactive/user/reset")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.resetPassword))
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 
     /*
