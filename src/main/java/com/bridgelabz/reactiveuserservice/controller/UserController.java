@@ -1,6 +1,7 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
+import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public Mono<String> userAuthenticated(){
+    public Mono<String> userAuthenticated(@Valid @RequestBody LoginDTO loginDTO){
         return Mono.just("User Authenticated.");
     }
 

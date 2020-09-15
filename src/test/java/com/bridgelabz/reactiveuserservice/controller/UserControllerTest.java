@@ -1,6 +1,7 @@
 package com.bridgelabz.reactiveuserservice.controller;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
+import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +27,8 @@ public class UserControllerTest {
     private WebTestClient webTestClient;
 
     private AddUserDto addUserDto;
+    private LoginDTO loginDTO;
 
-    @BeforeEach
-    void setUp() {
-
-    }
 
     /*
      *@author ROHAN KADAM
@@ -488,16 +486,190 @@ public class UserControllerTest {
      * */
 
     @Test
-    public void givenValidUserDetails_whenAuthenticated_shouldReturnCorrectResponse() {
+    public void givenValidLoginDetails_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Authenticated.");
 
     }
+
+    @Test
+    public void givenInValidLoginDetails_emailID_null_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO(null,"Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_emailID_empty_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("","Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_emailID_pattern_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan25.kadam@bri@dgelabz.com","Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_emailID_pattern1_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@","Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_emailID_pattern2_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bri123/*","Bridgelabz@2020");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+
+
+    @Test
+    public void givenInValidLoginDetails_password_null_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com",null);
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_password_empty_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_password_pattern_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan25.kadam@bri@dgelabz.com","Brisgee@4/*");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_password_pattern1_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","!<>rerwwvsd");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
+    @Test
+    public void givenInValidLoginDetails_password_pattern2_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","bridfe@?''");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+    @Test
+    public void givenInValidLoginDetails_password_sizeMin_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","B@20202");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+    @Test
+    public void givenInValidLoginDetails_password_sizeMax_whenAuthenticated_shouldReturnCorrectResponse() {
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com","Bridge@2020weallare the best version dsfsdfdsf sdfdsfsd ");
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody();
+
+    }
+
 
     /*
      * @author ROHAN KADAM
