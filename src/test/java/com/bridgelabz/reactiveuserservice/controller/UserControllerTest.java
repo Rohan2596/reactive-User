@@ -3,7 +3,7 @@ package com.bridgelabz.reactiveuserservice.controller;
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 
-import com.bridgelabz.reactiveuserservice.dto.ResetPassword;
+import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserControllerTest {
 
     private AddUserDto addUserDto;
     private LoginDTO loginDTO;
-    private ResetPassword resetPassword;
+    private ResetPasswordDto resetPasswordDto;
     private BindingResult bindingResult;
 
 
@@ -744,11 +744,11 @@ public class UserControllerTest {
 
     @Test
     public void givenValidResetDetails_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridgelabz@2020", "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
@@ -757,55 +757,55 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_null_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword(null, "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto(null, "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_empty_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword(" ", "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto(" ", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_pattern_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("B23<>[]sdfsf", "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto("B23<>[]sdfsf", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_pattern1_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridg/*-[]-", "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto("Bridg/*-[]-", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_pattern2_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridgelabz@  2020", "Bridgelabz@2020");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@  2020", "Bridgelabz@2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
@@ -818,55 +818,55 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_retype_null_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridgelabz@2020",null);
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020",null);
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_retype_empty_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridgelabz@2020"," ");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020"," ");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_retype_pattern_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword( "Bridgelabz@2020","B23<>[]sdfsf");
+        this.resetPasswordDto = new ResetPasswordDto( "Bridgelabz@2020","B23<>[]sdfsf");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_retype_pattern1_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword("Bridgelabz@2020","Bridg/*-[]-");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020","Bridg/*-[]-");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }
 
     @Test
     public void givenInValidResetDetails_retype_pattern2_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPassword = new ResetPassword( "Bridgelabz@2020","Bridgelabz@  2020");
+        this.resetPasswordDto = new ResetPasswordDto( "Bridgelabz@2020","Bridgelabz@  2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(this.resetPassword))
+                .body(BodyInserters.fromObject(this.resetPasswordDto))
                 .exchange()
                 .expectStatus().isBadRequest();
     }

@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResetPassword {
+public class ResetPasswordDto {
 
     @NotNull(message = "Password can't be null.")
     @NotEmpty(message = "Password can't be empty.")

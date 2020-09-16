@@ -2,19 +2,16 @@ package com.bridgelabz.reactiveuserservice.service;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
+import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
 import com.bridgelabz.reactiveuserservice.service.implementation.UserServiceImplementation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+
 
 
 @SpringBootTest
@@ -25,6 +22,7 @@ public class UserServiceTest {
 
     private AddUserDto addUserDto;
     private LoginDTO loginDTO;
+    private ResetPasswordDto resetPasswordDto;
 
 
     /*
@@ -74,6 +72,32 @@ public class UserServiceTest {
         userServiceImplementation.verifyUser("token")
                 .subscribe(result -> Assertions.assertEquals("User Verified.", result));
 
+    }
+
+    /*
+    * @author  Rohan Kadam
+    * @date    16 September 2020
+    * @purpose User Password Forgotten  Test Case.
+    * */
+
+    @Test
+    public void givenValidEmailAddress_whenForgotten_shouldReturnCorrectResponse(){
+        userServiceImplementation.forgotPassword("rohan.kadam@gmail.com")
+                .subscribe(result->Assertions.assertEquals("User Password Forgotten.",result));
+    }
+
+    /*
+     * @author  Rohan Kadam
+     * @date    16 September 2020
+     * @purpose User Password Reset  Test Case.
+     * */
+
+    @Test
+    public void givenValidResetPassword_whenResetPassword_shouldReturnCorrectResponse(){
+        this.resetPasswordDto=new ResetPasswordDto("BridgeLabz@2020","BridgeLabz@2020");
+
+        userServiceImplementation.resetPassword(this.resetPasswordDto)
+                .subscribe(result->Assertions.assertEquals("User Password Reset.",result));
     }
 
 }

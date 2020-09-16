@@ -2,7 +2,7 @@ package com.bridgelabz.reactiveuserservice.service.implementation;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
-import com.bridgelabz.reactiveuserservice.dto.ResetPassword;
+import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
 import com.bridgelabz.reactiveuserservice.service.UserService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -32,12 +32,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> forgotPassword(String emailId) {
-        return null;
+        return Mono.just("User Password Forgotten.");
     }
 
     @Override
-    public Mono<String> resetPassword(ResetPassword resetPassword) {
-        return null;
+    public Mono<String> resetPassword(ResetPasswordDto resetPasswordDto) {
+        return Mono.just("User Password Reset.");
     }
 
     @Override
