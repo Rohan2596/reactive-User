@@ -3,6 +3,7 @@ package com.bridgelabz.reactiveuserservice.service;
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
+import com.bridgelabz.reactiveuserservice.model.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,5 +14,5 @@ public interface UserService {
     Mono<String> verifyUser(String token);
     Mono<String> forgotPassword(String emailId);
     Mono<String> resetPassword(ResetPasswordDto resetPasswordDto);
-    Flux<String> getAllUser(String token);
+    Flux<User> getAllUser();
 }

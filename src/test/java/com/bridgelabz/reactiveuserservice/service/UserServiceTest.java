@@ -179,12 +179,15 @@ public class UserServiceTest {
      * @purpose Get all Users Test Case.
      * */
     @Test
-    public void givenValidToken_whenCorrect_shouldReturnCorrectResponse(){
+    public void givenValidToken_whenCorrect_shouldReturnCorrectUserList(){
+        Mockito.when(userRepository.findAll()).thenReturn(Flux.empty());
 
-     userServiceImplementation.getAllUser("token")
-                .collectList().subscribe(result->Assertions.assertEquals(2,result.size()));
+        userServiceImplementation.getAllUser()
+                .collectList().subscribe(result->Assertions.assertEquals(0,result.size()));
 
 
     }
+
+
 
 }
