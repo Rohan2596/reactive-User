@@ -1,6 +1,7 @@
 package com.bridgelabz.reactiveuserservice.service;
 
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
+import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import com.bridgelabz.reactiveuserservice.service.implementation.UserServiceImplementation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,12 +24,13 @@ public class UserServiceTest {
     private UserServiceImplementation userServiceImplementation;
 
     private AddUserDto addUserDto;
+    private LoginDTO loginDTO;
 
 
     /*
     * @author  Rohan Kadam
     * @date    16 September 2020
-    * @purpose User Addition Service Test Case
+    * @purpose User Addition Service Test Case.
     * */
 
     @Test
@@ -40,6 +42,23 @@ public class UserServiceTest {
                 "7890123456");
        userServiceImplementation.addUser(this.addUserDto)
                .subscribe(result->Assertions.assertEquals("User Added.",result));
+
+    }
+
+
+    /*
+     * @author  Rohan Kadam
+     * @date    16 September 2020
+     * @purpose User Authentication Service Test Case.
+     * */
+
+    @Test
+    public void givenValidLoginDetails_whenAuthenticated_shouldReturnCorrectResponse(){
+
+        this.loginDTO=new LoginDTO("rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020");
+        userServiceImplementation.authenticateUser(this.loginDTO)
+                .subscribe(result->Assertions.assertEquals("User Authenticated.",result));
 
     }
 

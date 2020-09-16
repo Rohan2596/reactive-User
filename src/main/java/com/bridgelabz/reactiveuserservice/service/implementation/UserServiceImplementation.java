@@ -20,7 +20,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> authenticateUser(LoginDTO loginDTO) {
-        return null;
+
+        return Mono.just("User Authenticated.");
     }
 
     @Override
