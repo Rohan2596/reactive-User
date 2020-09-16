@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
-
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 
 @SpringBootTest
@@ -98,6 +99,21 @@ public class UserServiceTest {
 
         userServiceImplementation.resetPassword(this.resetPasswordDto)
                 .subscribe(result->Assertions.assertEquals("User Password Reset.",result));
+    }
+
+
+    /*
+     * @author  Rohan Kadam
+     * @date    16 September 2020
+     * @purpose Get all Users Test Case.
+     * */
+    @Test
+    public void givenValidToken_whenCorrect_shouldReturnCorrectResponse(){
+
+     userServiceImplementation.getAllUser("token")
+                .collectList().subscribe(result->Assertions.assertEquals(2,result.size()));
+
+
     }
 
 }

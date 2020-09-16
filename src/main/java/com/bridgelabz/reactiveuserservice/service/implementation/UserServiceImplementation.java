@@ -42,6 +42,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Flux<String> getAllUser(String token) {
-        return null;
+
+        return Flux.just("Rohan Kadam","Warren Buffet");
+
     }
 }
