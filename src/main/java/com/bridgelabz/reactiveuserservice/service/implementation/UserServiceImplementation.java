@@ -50,6 +50,10 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> forgotPassword(String emailId) {
+        boolean userPresent=userRepository.findByEmailId(emailId);
+        if (userPresent==false){
+            return Mono.just("Email Doesn't Exists.");
+        }
         return Mono.just("User Password Forgotten.");
     }
 

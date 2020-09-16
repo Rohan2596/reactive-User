@@ -145,8 +145,17 @@ public class UserServiceTest {
 
     @Test
     public void givenValidEmailAddress_whenForgotten_shouldReturnCorrectResponse(){
+        Mockito.when(userRepository.findByEmailId(any())).thenReturn(true);
+
         userServiceImplementation.forgotPassword("rohan.kadam@gmail.com")
                 .subscribe(result->Assertions.assertEquals("User Password Forgotten.",result));
+    }
+    @Test
+    public void givenInValidEmailAddress_whenForgotten_shouldReturnCorrectResponse(){
+        Mockito.when(userRepository.findByEmailId(any())).thenReturn(false);
+
+        userServiceImplementation.forgotPassword("rohan.kadam@gmail.com")
+                .subscribe(result->Assertions.assertEquals("Email Doesn't Exists.",result));
     }
 
     /*
