@@ -26,7 +26,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> verifyUser(String token) {
-        return null;
+
+        return Mono.just("User Verified.");
     }
 
     @Override
