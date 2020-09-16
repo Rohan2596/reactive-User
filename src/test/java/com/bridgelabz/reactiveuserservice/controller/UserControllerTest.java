@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.reactive.function.BodyInserters;
 
 
@@ -29,6 +30,7 @@ public class UserControllerTest {
     private AddUserDto addUserDto;
     private LoginDTO loginDTO;
     private ResetPassword resetPassword;
+    private BindingResult bindingResult;
 
 
     /*
@@ -69,8 +71,9 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(this.addUserDto))
                 .exchange()
-                .expectStatus().isBadRequest()
-                .expectBody();
+                .expectStatus().isBadRequest();
+
+
 
     }
 
