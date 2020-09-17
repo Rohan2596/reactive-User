@@ -15,6 +15,13 @@ import java.util.List;
 @RequestMapping("/reactive/user")
 public class UserController {
 
+    /**
+     * localhost Url
+     * http://localhost:8081/reactive/user
+     *
+     */
+
+
     @PostMapping
     public Mono<String> userAdded( @Valid @RequestBody AddUserDto addUserDto){
        return Mono.just("User Added.");

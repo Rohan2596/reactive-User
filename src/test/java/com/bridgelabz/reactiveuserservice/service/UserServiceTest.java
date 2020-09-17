@@ -13,12 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -184,7 +182,6 @@ public class UserServiceTest {
 
         userServiceImplementation.getAllUser()
                 .collectList().subscribe(result->Assertions.assertEquals(0,result.size()));
-
 
     }
 
