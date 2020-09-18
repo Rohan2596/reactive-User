@@ -18,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 
 
@@ -54,7 +56,7 @@ public class UserServiceTest {
         this.user=new User(this.addUserDto);
         Mono<User> userMono=Mono.just(this.user);
         Mockito.when(userRepository.save(any())).thenReturn(userMono);
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(false);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.empty());
 
         userServiceImplementation.addUser(this.addUserDto)
                 .subscribe(result -> Assertions.assertEquals("User Added.", result));
@@ -71,7 +73,7 @@ public class UserServiceTest {
         this.user=new User(this.addUserDto);
         Mono<User> userMono=Mono.just(this.user);
         Mockito.when(userRepository.save(any())).thenReturn(userMono);
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(true);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.of(this.user));
 
         userServiceImplementation.addUser(this.addUserDto)
                 .subscribe(result -> Assertions.assertEquals("User Already Present.", result));
@@ -91,7 +93,7 @@ public class UserServiceTest {
 
         this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com",
                 "BridgeLabz@2020");
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(true);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.empty());
 
         userServiceImplementation.authenticateUser(this.loginDTO)
                 .subscribe(result -> Assertions.assertEquals("User Authenticated.", result));
@@ -99,10 +101,15 @@ public class UserServiceTest {
     }
     @Test
     public void givenInValidLoginDetails_whenAuthenticated_shouldReturnCorrectResponse() {
-
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
         this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com",
                 "BridgeLabz@2020");
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(false);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.of(this.user));
 
         userServiceImplementation.authenticateUser(this.loginDTO)
                 .subscribe(result -> Assertions.assertEquals("User Authentication Failed.", result));
@@ -118,7 +125,7 @@ public class UserServiceTest {
 
     @Test
     public void givenValidToken_whenVerified_shouldReturnCorrectResponse() {
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(true);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.empty());
 
         userServiceImplementation.verifyUser("token")
                 .subscribe(result -> Assertions.assertEquals("User Verified.", result));
@@ -127,7 +134,13 @@ public class UserServiceTest {
 
     @Test
     public void givenInValidToken_whenVerified_shouldReturnCorrectResponse() {
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(false);
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.of(this.user));
 
         userServiceImplementation.verifyUser("token")
                 .subscribe(result -> Assertions.assertEquals("User Verification Failed.", result));
@@ -143,14 +156,26 @@ public class UserServiceTest {
 
     @Test
     public void givenValidEmailAddress_whenForgotten_shouldReturnCorrectResponse(){
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(true);
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.empty());
 
         userServiceImplementation.forgotPassword("rohan.kadam@gmail.com")
                 .subscribe(result->Assertions.assertEquals("User Password Forgotten.",result));
     }
     @Test
     public void givenInValidEmailAddress_whenForgotten_shouldReturnCorrectResponse(){
-        Mockito.when(userRepository.findByEmailId(any())).thenReturn(false);
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+//        Mockito.when(userRepository.findByEmailId(any())).thenReturn(Optional.of(this.user));
 
         userServiceImplementation.forgotPassword("rohan.kadam@gmail.com")
                 .subscribe(result->Assertions.assertEquals("Email Doesn't Exists.",result));

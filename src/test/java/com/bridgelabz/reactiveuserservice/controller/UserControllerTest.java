@@ -4,23 +4,38 @@ import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 
 import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
+import com.bridgelabz.reactiveuserservice.model.User;
+import com.bridgelabz.reactiveuserservice.repository.UserRepository;
+import com.bridgelabz.reactiveuserservice.service.UserService;
+import com.bridgelabz.reactiveuserservice.service.implementation.UserServiceImplementation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
 
 
 @ExtendWith(SpringExtension.class)
-@WebFluxTest
+@WebFluxTest(UserController.class)
+@Import(UserServiceImplementation.class)
 public class UserControllerTest {
 
 
@@ -30,8 +45,11 @@ public class UserControllerTest {
     private AddUserDto addUserDto;
     private LoginDTO loginDTO;
     private ResetPasswordDto resetPasswordDto;
-    private BindingResult bindingResult;
 
+    @MockBean
+    UserRepository userRepository;
+
+    User user;
 
     /*
      *@author ROHAN KADAM
@@ -45,7 +63,11 @@ public class UserControllerTest {
                 "rohan.kadam@bridgelabz.com",
                 "BridgeLabz@2020",
                 "7890123456");
-        webTestClient.post().uri("/reactive/user")
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+        Mockito.when(userRepository.save(any())).thenReturn(userMono);
+        this.webTestClient.post().uri("/reactive/user")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(this.addUserDto))
                 .exchange()
@@ -74,12 +96,10 @@ public class UserControllerTest {
                 .expectStatus().isBadRequest();
 
 
-
     }
 
     @Test
     public void givenInValidUserDetails_Name_Empty_whenAdded_shouldReturnCorrectResponse() {
-
 
         this.addUserDto = new AddUserDto("",
                 "rohan.kadam@bridgelabz.com",
@@ -812,13 +832,13 @@ public class UserControllerTest {
 
 
     /*
-    * Retype Password...
-    *
-    * */
+     * Retype Password...
+     *
+     * */
 
     @Test
     public void givenInValidResetDetails_retype_null_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020",null);
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", null);
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
@@ -829,7 +849,7 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_retype_empty_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020"," ");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", " ");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
@@ -840,7 +860,7 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_retype_pattern_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPasswordDto = new ResetPasswordDto( "Bridgelabz@2020","B23<>[]sdfsf");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", "B23<>[]sdfsf");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
@@ -851,7 +871,7 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_retype_pattern1_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020","Bridg/*-[]-");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", "Bridg/*-[]-");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)
@@ -862,7 +882,7 @@ public class UserControllerTest {
 
     @Test
     public void givenInValidResetDetails_retype_pattern2_whenUpdated_shouldReturnCorrectResponse() {
-        this.resetPasswordDto = new ResetPasswordDto( "Bridgelabz@2020","Bridgelabz@  2020");
+        this.resetPasswordDto = new ResetPasswordDto("Bridgelabz@2020", "Bridgelabz@  2020");
 
         webTestClient.post().uri("/reactive/user/reset")
                 .accept(MediaType.APPLICATION_JSON)

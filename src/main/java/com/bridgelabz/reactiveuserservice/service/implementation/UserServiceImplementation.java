@@ -21,39 +21,40 @@ public class UserServiceImplementation implements UserService {
     @Override
     public Mono<String> addUser(AddUserDto addUserDto) {
 
-        boolean userPresent=userRepository.findByEmailId(addUserDto.emailId);
-      if (userPresent==false){
-          userRepository.save(new User(addUserDto));
-          return Mono.just("User Added.");
-      }
-        return Mono.just("User Already Present.");
+        Boolean userPresent = this.userRepository.findByEmailId(addUserDto.emailId).isPresent();
+        if (userPresent.booleanValue() == true) {
+            return Mono.just("User Already exist");
+        }
+        userRepository.save(new User(addUserDto)).subscribe();
+        return Mono.just("User Added.");
+
     }
 
     @Override
     public Mono<String> authenticateUser(LoginDTO loginDTO) {
-        boolean userPresent=userRepository.findByEmailId(loginDTO.emailId);
-        if (userPresent==true){
-            return Mono.just("User Authenticated.");
-        }
+//        Optional<User> userPresent=userRepository.findByEmailId(loginDTO.emailId);
+//        if (!userPresent.isPresent()){
+//            return Mono.just("User Authenticated.");
+//        }
         return Mono.just("User Authentication Failed.");
     }
 
     @Override
     public Mono<String> verifyUser(String token) {
-        String emailId=token;
-        boolean userPresent=userRepository.findByEmailId(emailId);
-        if (userPresent==false){
-            return Mono.just("User Verification Failed.");
-        }
+        String emailId = token;
+//        Optional<User> userPresent=userRepository.findByEmailId(emailId);
+//        if (!userPresent.isPresent()){
+//            return Mono.just("User Verification Failed.");
+//        }
         return Mono.just("User Verified.");
     }
 
     @Override
     public Mono<String> forgotPassword(String emailId) {
-        boolean userPresent=userRepository.findByEmailId(emailId);
-        if (userPresent==false){
-            return Mono.just("Email Doesn't Exists.");
-        }
+//        Optional<User> userPresent=userRepository.findByEmailId(emailId);
+//        if (!userPresent.isPresent()){
+//            return Mono.just("Email Doesn't Exists.");
+//        }
         return Mono.just("User Password Forgotten.");
     }
 
@@ -64,7 +65,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Flux<User> getAllUser() {
-          return userRepository.findAll();
+        return userRepository.findAll();
 
     }
 }
