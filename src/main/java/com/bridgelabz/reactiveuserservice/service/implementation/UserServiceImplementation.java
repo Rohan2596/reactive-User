@@ -3,6 +3,7 @@ package com.bridgelabz.reactiveuserservice.service.implementation;
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
+import com.bridgelabz.reactiveuserservice.exception.UserException;
 import com.bridgelabz.reactiveuserservice.model.User;
 import com.bridgelabz.reactiveuserservice.repository.UserRepository;
 import com.bridgelabz.reactiveuserservice.service.UserService;
@@ -20,7 +21,10 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> addUser(AddUserDto addUserDto) {
-
+        /*
+         * mono.empty return mono object
+         * need to used flatmap to findbyEmailId
+         * */
         Boolean userPresent = this.userRepository.findByEmailId(addUserDto.emailId).isPresent();
         if (userPresent.booleanValue() == true) {
             return Mono.just("User Already Exist.");
@@ -43,7 +47,6 @@ public class UserServiceImplementation implements UserService {
     public Mono<String> verifyUser(String token) {
         String emailId = token;
         Boolean userPresent = this.userRepository.findByEmailId(emailId).isPresent();
-        System.out.println(userPresent.booleanValue());
         if (userPresent.booleanValue()) {
             return Mono.just("User Verified.");
         }

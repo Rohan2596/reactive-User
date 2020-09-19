@@ -3,6 +3,7 @@ package com.bridgelabz.reactiveuserservice.controller;
 import com.bridgelabz.reactiveuserservice.dto.AddUserDto;
 import com.bridgelabz.reactiveuserservice.dto.LoginDTO;
 import com.bridgelabz.reactiveuserservice.dto.ResetPasswordDto;
+import com.bridgelabz.reactiveuserservice.exception.UserException;
 import com.bridgelabz.reactiveuserservice.service.UserService;
 import com.bridgelabz.reactiveuserservice.service.implementation.UserServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UserController {
     UserServiceImplementation userServiceImplementation ;
 
     @PostMapping
-    public Mono<String> userAdded(@Valid @RequestBody AddUserDto addUserDto) {
+    public Mono<String> userAdded(@Valid @RequestBody AddUserDto addUserDto)  throws UserException {
         return userServiceImplementation.addUser(addUserDto);
     }
 
