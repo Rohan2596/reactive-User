@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/auth")
     public Mono<String> userAuthenticated(@Valid @RequestBody LoginDTO loginDTO) {
-        return Mono.just("User Authenticated.");
+        return userServiceImplementation.authenticateUser(loginDTO);
     }
 
     @GetMapping("/verify/{token}")
@@ -42,7 +42,7 @@ public class UserController {
         if (token.isEmpty()) {
             return Mono.just("In-valid User Token.");
         }
-        return Mono.just("User Verified.");
+        return userServiceImplementation.verifyUser(token);
     }
 
     @GetMapping("/forgot")
@@ -51,7 +51,7 @@ public class UserController {
             return Mono.just("Email Address Doesn't Exists.");
         }
 
-        return Mono.just("User Password Forgotten.");
+        return userServiceImplementation.forgotPassword(emailId);
     }
 
     @PostMapping("/reset")

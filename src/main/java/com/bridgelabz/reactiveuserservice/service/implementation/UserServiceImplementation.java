@@ -23,7 +23,7 @@ public class UserServiceImplementation implements UserService {
 
         Boolean userPresent = this.userRepository.findByEmailId(addUserDto.emailId).isPresent();
         if (userPresent.booleanValue() == true) {
-            return Mono.just("User Already exist");
+            return Mono.just("User Already Exist.");
         }
         userRepository.save(new User(addUserDto)).subscribe();
         return Mono.just("User Added.");
@@ -32,30 +32,32 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Mono<String> authenticateUser(LoginDTO loginDTO) {
-//        Optional<User> userPresent=userRepository.findByEmailId(loginDTO.emailId);
-//        if (!userPresent.isPresent()){
-//            return Mono.just("User Authenticated.");
-//        }
+        Boolean userPresent = this.userRepository.findByEmailId(loginDTO.emailId).isPresent();
+        if (userPresent.booleanValue() == true) {
+            return Mono.just("User Authenticated.");
+        }
         return Mono.just("User Authentication Failed.");
     }
 
     @Override
     public Mono<String> verifyUser(String token) {
         String emailId = token;
-//        Optional<User> userPresent=userRepository.findByEmailId(emailId);
-//        if (!userPresent.isPresent()){
-//            return Mono.just("User Verification Failed.");
-//        }
-        return Mono.just("User Verified.");
+        Boolean userPresent = this.userRepository.findByEmailId(emailId).isPresent();
+        System.out.println(userPresent.booleanValue());
+        if (userPresent.booleanValue()) {
+            return Mono.just("User Verified.");
+        }
+        return Mono.just("User Verification Failed.");
     }
 
     @Override
     public Mono<String> forgotPassword(String emailId) {
-//        Optional<User> userPresent=userRepository.findByEmailId(emailId);
-//        if (!userPresent.isPresent()){
-//            return Mono.just("Email Doesn't Exists.");
-//        }
-        return Mono.just("User Password Forgotten.");
+
+        Boolean userPresent = this.userRepository.findByEmailId(emailId).isPresent();
+        if (userPresent.booleanValue()) {
+            return Mono.just("User Password Forgotten.");
+        }
+        return Mono.just("Email Doesn't Exists.");
     }
 
     @Override

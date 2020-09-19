@@ -77,6 +77,28 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void givenINValidUserDetails_whenAdded_alreadyExist_shouldReturnCorrectResponse() {
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.of(Mono.just(this.user)));
+
+        Mockito.when(userRepository.save(any())).thenReturn(userMono);
+        this.webTestClient.post().uri("/reactive/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(this.addUserDto))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Already Exist.");
+
+    }
+
+
     /*
      * User Name
      * */
@@ -513,6 +535,15 @@ public class UserControllerTest {
     public void givenValidLoginDetails_whenAuthenticated_shouldReturnCorrectResponse() {
 
         this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "Bridgelabz@2020");
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+        Mockito.when(userRepository.save(any())).thenReturn(userMono);
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.of(Mono.just(this.user)));
 
         webTestClient.post().uri("/reactive/user/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -523,6 +554,29 @@ public class UserControllerTest {
                 .isEqualTo("User Authenticated.");
 
     }
+
+    @Test
+    public void givenValidLoginDetails_whenAuthenticated_DoesntExist_shouldReturnCorrectResponse() {
+
+        this.loginDTO = new LoginDTO("rohan.kadam@bridgelabz.com", "Bridgelabz@2020");
+
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+
+        webTestClient.post().uri("/reactive/user/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromObject(this.loginDTO))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Authentication Failed.");
+
+    }
+
+
+    /*
+    * Login Details
+    * Invalid Email Id.
+    * */
 
     @Test
     public void givenInValidLoginDetails_emailID_null_whenAuthenticated_shouldReturnCorrectResponse() {
@@ -704,12 +758,34 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserToken_whenVerified_shouldReturnCorrectResponse() {
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+        Mockito.when(userRepository.save(any())).thenReturn(userMono);
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.of(Mono.just(this.user)));
+
+
         webTestClient.get().uri("/reactive/user/verify/{token}", "token")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Verified.");
+    }
+    @Test
+    public void givenValidUserToken_whenVerified_inValidEmail_shouldReturnCorrectResponse() {
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+
+        webTestClient.get().uri("/reactive/user/verify/{token}", "token")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("User Verification Failed.");
     }
 
     @Test
@@ -730,12 +806,36 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserEmailAddress_whenForgot_shouldReturnCorrectResponse() {
+        this.addUserDto = new AddUserDto("Rohan Kadam",
+                "rohan.kadam@bridgelabz.com",
+                "BridgeLabz@2020",
+                "7890123456");
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+        this.user=new User(this.addUserDto);
+        Mono<User> userMono=Mono.just(this.user);
+        Mockito.when(userRepository.save(any())).thenReturn(userMono);
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.of(Mono.just(this.user)));
+
+
         webTestClient.get().uri("/reactive/user/forgot/?emailId=" + "rohan.kadam@bridgelabz.com")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .isEqualTo("User Password Forgotten.");
+    }
+    @Test
+    public void givenValidUserEmailAddress_whenForgot_Failed_shouldReturnCorrectResponse() {
+
+        Mockito.when(this.userRepository.findByEmailId(any())).thenReturn(Optional.empty());
+
+
+        webTestClient.get().uri("/reactive/user/forgot/?emailId=" + "rohan.kadam@bridgelabz.com")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Email Doesn't Exists.");
     }
 
     @Test
